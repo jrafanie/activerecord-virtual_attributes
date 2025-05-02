@@ -49,8 +49,7 @@ module ActiveRecord
 
             define_delegate(method_name, method, :to => to, :allow_nil => allow_nil, :default => default)
 
-            self.virtual_delegates_to_define =
-              virtual_delegates_to_define.merge(method_name => [method, options])
+            define_virtual_delegate(method_name, method, options)
           end
         end
 
