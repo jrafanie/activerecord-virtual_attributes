@@ -9,11 +9,6 @@ module ActiveRecord
     module VirtualDelegates
       extend ActiveSupport::Concern
 
-      included do
-        class_attribute :virtual_delegates_to_define, :instance_accessor => false
-        self.virtual_delegates_to_define = {}
-      end
-
       module ClassMethods
         #
         # Definition
@@ -48,7 +43,6 @@ module ActiveRecord
             end
 
             define_delegate(method_name, method, :to => to, :allow_nil => allow_nil, :default => default)
-
             define_virtual_delegate(method_name, method, options)
           end
         end

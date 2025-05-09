@@ -37,11 +37,6 @@ module ActiveRecord
     ActiveRecord::Type.register(:string_set, Type::StringSet)
     ActiveRecord::Type.register(:symbol, Type::Symbol)
 
-    included do
-      class_attribute :virtual_attributes_to_define, :instance_accessor => false
-      self.virtual_attributes_to_define = {}
-    end
-
     module ClassMethods
       #
       # Definition
@@ -61,7 +56,7 @@ module ActiveRecord
 
         type = type.call if type.respond_to?(:call)
         type = ActiveRecord::Type.lookup(type, **options.except(:uses, :arel)) if type.kind_of?(Symbol)
-        define_virtual_attribute(name, type, **options)
+        define_virtual_attribute(name, type, **options.slice(:uses, :arel))
       end
 
       #
@@ -87,8 +82,6 @@ module ActiveRecord
       private
 
       def define_virtual_attribute(name, cast_type, uses: nil, arel: nil)
-        # attribute_types[name] = cast_type
-        # hook_attribute_type(name, cast_type) if cast_type
         define_attribute(name, cast_type)
         define_virtual_include(name, uses) if uses
         define_virtual_arel(name, arel) if arel
