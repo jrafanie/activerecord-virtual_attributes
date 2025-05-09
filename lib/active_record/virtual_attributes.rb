@@ -87,7 +87,9 @@ module ActiveRecord
       private
 
       def define_virtual_attribute(name, cast_type, uses: nil, arel: nil)
-        attribute(name, cast_type)
+        # attribute_types[name] = cast_type
+        # hook_attribute_type(name, cast_type) if cast_type
+        define_attribute(name, cast_type)
         define_virtual_include(name, uses) if uses
         define_virtual_arel(name, arel) if arel
       end
